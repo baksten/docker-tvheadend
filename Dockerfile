@@ -215,6 +215,7 @@ RUN \
     --enable-pngquant \
     --enable-trace \
     $([[ "$TARGETARCH" = "amd64" ]] && echo ' --enable-vaapi ' || echo "") \
+    $([[ "$TARGETARCH" = "arm" ]] && echo ' --nowerror ' || echo "") \
     --infodir=/usr/share/info \
     --localstatedir=/var \
     --mandir=/usr/share/man \
