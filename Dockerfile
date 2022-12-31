@@ -215,8 +215,8 @@ RUN \
     --enable-libav \
     --enable-pngquant \
     --enable-trace \
-    $([[ "$$TARGETARCH$TARGETVARIANT" = "amd64" ]] && echo '--enable-vaapi' || echo "") \
-    $([[ "$$TARGETARCH$TARGETVARIANT" = "armv7" ]] && echo '--nowerror' || echo "") \
+    $([[ "$TARGETARCH$TARGETVARIANT" = "amd64" ]] && echo '--enable-vaapi' || echo "") \
+    $([[ "$TARGETARCH$TARGETVARIANT" = "armv7" ]] && echo '--nowerror' || echo "") \
     --infodir=/usr/share/info \
     --localstatedir=/var \
     --mandir=/usr/share/man \
@@ -279,6 +279,7 @@ LABEL maintainer="saarg"
 
 # environment settings
 ARG TARGETARCH
+ARG TARGETVARIANT
 ENV HOME="/config"
 
 RUN \
