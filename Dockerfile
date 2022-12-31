@@ -10,106 +10,107 @@ ARG XMLTV_VER="v1.0.0"
 
 # environment settings
 ARG TARGETARCH
+ARG TARGETVARIANT
 ARG TZ="Europe/Oslo"
 ARG TVHEADEND_COMMIT
 ENV HOME="/config"
 
 RUN \
- echo "**** install build packages ****" && \
- apk add --no-cache \
-	autoconf \
-	automake \
-	bsd-compat-headers \
-	bzip2 \
-	cmake \
-	curl \
-	ffmpeg-dev \
-	file \
-	findutils \
-	g++ \
-	gcc \
-	gettext-dev \
-	git \
-	gnu-libiconv-dev \
-	gzip \
-	jq \
-	libcurl \
-	libgcrypt-dev \
-	libhdhomerun-dev \
-	libtool \
-	libvpx-dev \
-	libxml2-dev \
-	libxslt-dev \
-	linux-headers \
-	make \
-	openssl-dev \
-	opus-dev \
-	patch \
-	pcre2-dev \
-	perl-archive-zip \
-	perl-boolean \
-	perl-capture-tiny \
-	perl-cgi \
-	perl-compress-raw-zlib \
-	perl-date-manip \
-	perl-datetime \
-	perl-datetime-format-strptime \
-	perl-datetime-timezone \
-	perl-dbd-sqlite \
-	perl-dbi \
-	perl-dev \
-	perl-digest-sha1 \
-	perl-doc \
-	perl-file-slurp \
-	perl-file-temp \
-	perl-file-which \
-	perl-getopt-long \
-	perl-html-parser \
-	perl-html-tree \
-	perl-http-cookies \
-	perl-io \
-	perl-io-html \
-	perl-io-socket-ssl \
-	perl-io-stringy \
-	perl-json \
-	perl-json-xs \
-	perl-libwww \
-	perl-lingua-en-numbers-ordinate \
-	perl-lingua-preferred \
-	perl-list-moreutils \
-	perl-lwp-useragent-determined \
-	perl-module-build \
-	perl-module-pluggable \
-	perl-net-ssleay \
-	perl-parse-recdescent \
-	perl-path-class \
-	perl-scalar-list-utils \
-	perl-term-progressbar \
-	perl-term-readkey \
-	perl-test-exception \
-	perl-test-requires \
-	perl-timedate \
-	perl-try-tiny \
-	perl-unicode-string \
-	perl-xml-libxml \
-	perl-xml-libxslt \
-	perl-xml-parser \
-	perl-xml-sax \
-	perl-xml-treepp \
-	perl-xml-twig \
-	perl-xml-writer \
-	pkgconf \
-	pngquant \
-	python3 \
-	sdl-dev \
-	tar \
-	uriparser-dev \
-	wget \
-	x264-dev \
-	x265-dev \
-	zlib-dev
+  echo "**** install build packages ****" && \
+  apk add --no-cache \
+    autoconf \
+    automake \
+    bsd-compat-headers \
+    bzip2 \
+    cmake \
+    curl \
+    ffmpeg-dev \
+    file \
+    findutils \
+    g++ \
+    gcc \
+    gettext-dev \
+    git \
+    gnu-libiconv-dev \
+    gzip \
+    jq \
+    libcurl \
+    libgcrypt-dev \
+    libhdhomerun-dev \
+    libtool \
+    libvpx-dev \
+    libxml2-dev \
+    libxslt-dev \
+    linux-headers \
+    make \
+    openssl-dev \
+    opus-dev \
+    patch \
+    pcre2-dev \
+    perl-archive-zip \
+    perl-boolean \
+    perl-capture-tiny \
+    perl-cgi \
+    perl-compress-raw-zlib \
+    perl-date-manip \
+    perl-datetime \
+    perl-datetime-format-strptime \
+    perl-datetime-timezone \
+    perl-dbd-sqlite \
+    perl-dbi \
+    perl-dev \
+    perl-digest-sha1 \
+    perl-doc \
+    perl-file-slurp \
+    perl-file-temp \
+    perl-file-which \
+    perl-getopt-long \
+    perl-html-parser \
+    perl-html-tree \
+    perl-http-cookies \
+    perl-io \
+    perl-io-html \
+    perl-io-socket-ssl \
+    perl-io-stringy \
+    perl-json \
+    perl-json-xs \
+    perl-libwww \
+    perl-lingua-en-numbers-ordinate \
+    perl-lingua-preferred \
+    perl-list-moreutils \
+    perl-lwp-useragent-determined \
+    perl-module-build \
+    perl-module-pluggable \
+    perl-net-ssleay \
+    perl-parse-recdescent \
+    perl-path-class \
+    perl-scalar-list-utils \
+    perl-term-progressbar \
+    perl-term-readkey \
+    perl-test-exception \
+    perl-test-requires \
+    perl-timedate \
+    perl-try-tiny \
+    perl-unicode-string \
+    perl-xml-libxml \
+    perl-xml-libxslt \
+    perl-xml-parser \
+    perl-xml-sax \
+    perl-xml-treepp \
+    perl-xml-twig \
+    perl-xml-writer \
+    pkgconf \
+    pngquant \
+    python3 \
+    sdl-dev \
+    tar \
+    uriparser-dev \
+    wget \
+    x264-dev \
+    x265-dev \
+    zlib-dev
 
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
+RUN if [ "$TARGETARCH$TARGETVARIANT" = "amd64" ]; then \
     echo "**** install additional build packages for amd64 ****" && \
     apk add --no-cache \
       libva-dev; \
@@ -117,8 +118,8 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
 
 #Download linuxserver/tvheadend git
 RUN \
- echo "**** download linuxserver/docker-tvheadend ****" && \
- git clone https://github.com/linuxserver/docker-tvheadend.git /tmp/docker-tvheadend
+  echo "**** download linuxserver/docker-tvheadend ****" && \
+  git clone https://github.com/linuxserver/docker-tvheadend.git /tmp/docker-tvheadend
 
 # copy patches
 COPY patches/ /tmp/patches/
@@ -214,8 +215,8 @@ RUN \
     --enable-libav \
     --enable-pngquant \
     --enable-trace \
-    $([[ "$TARGETARCH" = "amd64" ]] && echo ' --enable-vaapi ' || echo "") \
-    $([[ "$TARGETARCH" = "arm" ]] && echo ' --nowerror ' || echo "") \
+    $([[ "$$TARGETARCH$TARGETVARIANT" = "amd64" ]] && echo '--enable-vaapi' || echo "") \
+    $([[ "$$TARGETARCH$TARGETVARIANT" = "armv7" ]] && echo '--nowerror' || echo "") \
     --infodir=/usr/share/info \
     --localstatedir=/var \
     --mandir=/usr/share/man \
@@ -362,7 +363,7 @@ RUN \
     x265 \
     zlib
 
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
+RUN if [ "$TARGETARCH$TARGETVARIANT" = "amd64" ]; then \
     echo "**** install additional build packages for amd64 ****" && \
     apk add --no-cache \
       libva \
