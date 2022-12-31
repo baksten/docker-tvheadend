@@ -184,6 +184,7 @@ RUN \
     /tmp/tvheadend && \
   git clone https://github.com/tvheadend/tvheadend.git /tmp/tvheadend && \
   cd /tmp/tvheadend && \
+  git fetch && \
   git checkout ${TVHEADEND_COMMIT} && \
   echo "**** patch tvheadend ****" && \
   git apply /tmp/patches/tvheadend43.patch && \
